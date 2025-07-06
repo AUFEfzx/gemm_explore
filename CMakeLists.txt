@@ -25,3 +25,8 @@ install(TARGETS gemm_shared gemm_static
 install(DIRECTORY include/
     DESTINATION include
 )
+
+#build test
+add_executable(test_unittest "${PROJECT_SOURCE_DIR}/test/gemm_unittest.cpp")
+target_link_libraries(test_unittest gemm_static)
+
