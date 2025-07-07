@@ -1,6 +1,51 @@
-#include "gemm.h"
 #include <chrono>
 #include <thread>
+#include "gemm.h"
+#include "cblas.h"
+
+extern void dgemm_(char*, char*, int*, int*,int*, double*, double*, int*, double*, int*, double*, double*, int*);
+
+void test_openblas_dgemm()
+{
+
+    int m = 3;
+    int n = 3;
+    int k = 3;
+    int sizeofa = m * k;
+    int sizeofb = k * n;
+    int sizeofc = m * n;
+    char ta = 'N';
+    char tb = 'N';
+    double alpha = 1.2;
+    double beta = 0.001;
+
+    struct timeval start, finish;
+    double duration;
+
+    double *A = (double *)malloc(sizeof(double) * sizeofa);
+    double *B = (double *)malloc(sizeof(double) * sizeofb);
+    double *C = (double *)malloc(sizeof(double) * sizeofc);
+
+    srand((unsigned)time(NULL));
+    int i;
+    for (i = 0; i < sizeofa; i++)
+        A[i] = i % 3 + 1; //(rand()%100)/10.0;
+
+    for (i = 0; i < sizeofb; i++)
+        B[i] = i % 3 + 1; //(rand()%100)/10.0;
+
+    for (i = 0; i < sizeofc; i++)
+        C[i] = i % 3 + 1; //(rand()%100)/10.0;
+
+    dgemm_(&ta, &tb, &m, &n, &k, &alpha, A, &m, B, &k, &beta, C, &m);
+
+    for(i=0;i<sizeofc;i++){
+        printf("%llf  ",C[i]);
+    }
+    free(A);
+    free(B);
+    free(C);
+}
 
 class TimePoint
 {
@@ -104,6 +149,8 @@ int main(){
     int64_t gemm_100x100_run_cost{t.Elapsed()};
     printf("gemm_100x100_run_cost is %d ms\n", gemm_100x100_run_cost);
     //mac air m1 core: gemm_100x100_run_cost is 3977 ms
+
+    test_openblas_dgemm();
 
     return 0;
 }

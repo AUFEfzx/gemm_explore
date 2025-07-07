@@ -27,6 +27,9 @@ install(DIRECTORY include/
 )
 
 #build test
+include_directories("${PROJECT_SOURCE_DIR}/test/3rd/OpenBLAS/mac_m1/include")
 add_executable(test_unittest "${PROJECT_SOURCE_DIR}/test/gemm_unittest.cpp")
-target_link_libraries(test_unittest gemm_static)
+
+target_link_directories(test_unittest PRIVATE "${PROJECT_SOURCE_DIR}/test/3rd/OpenBLAS/mac_m1/lib_static")
+target_link_libraries(test_unittest gemm_static openblas)
 

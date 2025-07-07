@@ -38,6 +38,7 @@ MatrixXf GEMMultiplication()
 矩阵乘法函数
 
 ### 3、测试设计
+在test中尝试集成多种第三方库进行验证性能及精度，比如OpenBLAS、CBLAS、MKL（Math Kernel Library）、Eigen四个库进行比较。
 
 结果
 精度分析
